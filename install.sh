@@ -6,12 +6,7 @@ set -x
 
 install_zsh()
 {
-    if command -v "zsh --version 2>&1 > /dev/null"
-    then
-        echo "zsh not found... attempting to install"
-        sudo apt install zsh
-    fi
-    
+    sudo apt install zsh starship
     echo "Setting zsh as current ${USER}'s default shell."
     sudo chsh -s $(which zsh) $USER
    
@@ -30,11 +25,7 @@ install_nerd_font()
 
 install_tmux()
 {
-    if command -v "tmux -V 2>&1 > /dev/null"
-    then
-        echo "tmux not found... attempting to install"
-        sudo apt install tmux
-    fi
+    sudo apt install tmux
 
     stow -t $HOME_DIRECTORY tmux
     ~/.tmux/plugins/tpm/bin/install_plugins
@@ -42,30 +33,26 @@ install_tmux()
 
 install_submodules()
 {
-    if command -v "git --version 2>&1 > /dev/null"
-    then
-        echo "git not found... attempting to install"
-        sudo apt install git
-    fi
+    sudo apt install git
     git submodule update --init --recursive
 }
 
 install_nvim()
 {
-    if command -v "nvim --version 2>&1 > /dev/null"
-    then
-        echo "nvim not found... attempting to install"
-        cd neovim
-        make CMAKE_BUILD_TYPE=RelWithDebInfo
-        sudo make install
-        cd ..
-    fi
+#    if command -v "nvim --version 2>&1 > /dev/null"
+#    then
+#        echo "nvim not found... attempting to install"
+#        cd neovim
+#        make CMAKE_BUILD_TYPE=RelWithDebInfo
+#        sudo make install
+#        cd ..
+#    fi
 
     echo "Installing custom Nvim configs"
     stow -t $HOME_DIRECTORY nvim
 }
 
-install_nerd_font
+#install_nerd_font
 install_submodules
 install_zsh
 install_tmux
