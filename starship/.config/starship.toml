@@ -24,6 +24,7 @@ $docker_context\
 [](fg:blue bg:purple)\
 $time\
 [ ](fg:purple)\
+$cmd_duration\
 $line_break$character"""
 
 palette = 'catppuccin_mocha'
@@ -176,6 +177,12 @@ disabled = false
 time_format = "%R"
 style = "bg:peach"
 format = '[[  $time ](fg:mantle bg:purple)]($style)'
+
+[cmd_duration]
+style = "bg:surface0"
+min_time = 1
+show_milliseconds = true
+format = '[](surface0)[[ $duration ](fg:text bg:surface0)]($style)[](surface0)'
 
 [line_break]
 disabled = false
