@@ -12,7 +12,7 @@ install_zsh()
 
     echo "Installing custom zsh configs."
     stow -t $HOME_DIRECTORY zsh
-    curl -sS https://starship.rs/install.sh | sh
+    curl -sS https://starship.rs/install.sh | sudo sh
     stow -t $HOME_DIRECTORY starship
 }
 
@@ -40,9 +40,12 @@ install_submodules()
 
 install_nvim()
 {
-    sudo add-apt-repository ppa:neovim-ppa/stable
-    sudo apt-get update
-    sudo apt-get install neovim
+    sudo apt install cmake
+    git clone https://github.com/neovim/neovim.git
+    cd neovim
+    make CMAKE_BUILD_TYPE=Release
+    sudo make install
+    cd ..
 
     echo "Installing custom Nvim configs"
     stow -t $HOME_DIRECTORY nvim
