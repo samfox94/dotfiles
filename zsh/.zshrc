@@ -8,19 +8,20 @@ if [ ! -d "$ZINIT_HOME" ]; then
 fi
 
 source "${ZINIT_HOME}/zinit.zsh"
-#export TERM="screen-256color"
+
 typeset -A ZSH_HIGHLIGHT_STYLES
 ZSH_HIGHLIGHT_STYLES[path]='none'
 
 zinit light zsh-users/zsh-syntax-highlighting
 zinit light zsh-users/zsh-completions
 zinit light zsh-users/zsh-autosuggestions
+zinit light Aloxaf/fzf-tab
 
 bindkey -v
-bindkey '^R' history-incremental-search-backward
+bindkey '^r' history-incremental-search-backward
 bindkey '^j' history-search-forward
 bindkey '^k' history-search-backward
-bindkey '^[[Z' autosuggest-accept 
+bindkey '^[[Z' autosuggest-accept
 
 autoload -U compinit && compinit
 
@@ -36,8 +37,16 @@ setopt hist_ignore_dups
 setopt hist_find_no_dups
 
 zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
-zstyle ':completion:*' menu select
+zstyle ':completion:*' menu no
 zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
+
+zstyle ':fzf-tab:*' use-fzf-default-opts yes
+export FZF_DEFAULT_OPTS="--prompt=' '\
+    --bind shift-up:preview-up,shift-down:preview-down\
+    --color=gutter:-1,bg+:#3B4252,spinner:#81A1C1,hl:#616E88,fg:#D8DEE9,header:#616E88,info:#5E81AC,pointer:#81A1C1,marker:#B48EAD,fg+:#D8DEE9,prompt:#81A1C1,hl+:#81A1C1" 
+
+# zstyle ':fzf-tab:complete:(cd|ls):*' fzf-preview --height '100%' 'tree -L 3 -C $realpath | head -200'
+zstyle ':fzf-tab:complete:systemctl-*:*' fzf-preview 'SYSTEMD_COLORS=1 systemctl status $word'
 
 # make less more friendly for non-text input files, see lesspipe(1)
 [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
@@ -54,7 +63,7 @@ fi
 
 # colored GCC warnings and errors
 export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
-
+# Theme colors from arcticicestudio/nord-vim
 # some more ls aliases
 alias ll='ls -lah'
 alias la='ls -A'
@@ -62,5 +71,8 @@ alias l='ls -CF'
 
 alias vim='nvim'
 alias vi='nvim'
+alias nvo='nvim $(fzf -m --preview="batcat --color=always --style=numbers --line-range=:500 {}")'
 
 eval "$(starship init zsh)"
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
