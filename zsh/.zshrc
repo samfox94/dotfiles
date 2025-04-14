@@ -39,13 +39,13 @@ setopt hist_find_no_dups
 zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
 zstyle ':completion:*' menu no
 zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
-
 zstyle ':fzf-tab:*' use-fzf-default-opts yes
+
 export FZF_DEFAULT_OPTS="--prompt=' '\
     --bind shift-up:preview-up,shift-down:preview-down\
     --color=gutter:-1,bg+:#3B4252,spinner:#81A1C1,hl:#616E88,fg:#D8DEE9,header:#616E88,info:#5E81AC,pointer:#81A1C1,marker:#B48EAD,fg+:#D8DEE9,prompt:#81A1C1,hl+:#81A1C1" 
 
-# zstyle ':fzf-tab:complete:(cd|ls):*' fzf-preview --height '100%' 'tree -L 3 -C $realpath | head -200'
+zstyle ':fzf-tab:complete:(cd|ls):*' fzf-preview 'tree -L 1 -aC $realpath | head -200'
 zstyle ':fzf-tab:complete:systemctl-*:*' fzf-preview 'SYSTEMD_COLORS=1 systemctl status $word'
 
 # make less more friendly for non-text input files, see lesspipe(1)
